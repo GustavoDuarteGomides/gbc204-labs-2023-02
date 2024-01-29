@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+
+void
+main()
+{
+    gl_Position = vPosition;
+    gl_PointSize = 5.0;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+
+void
+main()
+{
+    gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="exec2.js"></script>
+</head>
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+<!--Usando LINE, dois vertices são pegos e é criado uma linha entre eles-->
+<!--Usando LINE_STRIP, Uma linha será feita entre o vertice anterior e o próximo-->
+<!--Usando LINE_LOOP, será feito o mesmo no LINE_STRIP, porém será feito uma linha entre o ultimo e o primeiro vertice-->
+<!--Usando TRIANGLE, será feito um triangulo usando três vertices-->
+<!--Usando TRIANGLE_STRIP, será feito um triângulo entre os três último vertices-->
+<!--Usando TRIANGLE_FAN, será feito triângulos usando sempre o primeiro ponto e últimos 2 vertices-->
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>
