@@ -5,7 +5,7 @@ var gl;
 
 var points = [];
 
-var NumTimesToSubdivide = 5;
+var NumTimesToSubdivide = 3;
 
 window.onload = function init()
 {

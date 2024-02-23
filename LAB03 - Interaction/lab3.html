@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <title>* Lab 3 *</title>
+<head>
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+attribute vec4 vColor;
+varying vec4 color;
+
+void main(){
+  color = vColor;
+  gl_Position =  vPosition;
+}
+</script>
+<script id="fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+varying vec4 color;
+void main(){
+    gl_FragColor = color;
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="lab3.js"></script>
+</head>
+<body>
+<button id="Right">>></button>
+<button id="Left"><<</button>
+
+<select id="Controls" size="3">
+    <option value="0">Triângulo 1</option>
+    <option value="1">Triângulo 2</option>
+    <option value="2">Triângulo 3</option>
+</select>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>
