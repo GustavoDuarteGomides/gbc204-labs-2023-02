@@ -8,15 +8,10 @@ var NumVertices  = 36;
 var points = [];
 var colors = [];
 
-var xAxis = 0;
-var yAxis = 1;
-var zAxis = 2;
+var velocidade = 100;
+var direction = 0;
+var posicaoSeta = vec2(0, 0);
 
-var axis = 0;
-//var theta = [ 30, 30, 30 ];
-var theta = [ 0, 0, 0 ];
-
-var thetaLoc;
 
 window.onload = function init()
 {
@@ -26,8 +21,6 @@ window.onload = function init()
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
     cria_seta();
-    //colorCube();
-    //colorPiramide();
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
@@ -54,7 +47,24 @@ window.onload = function init()
     gl.vertexAttribPointer( vPosition, 4, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
-    thetaLoc = gl.getUniformLocation(program, "theta");
+
+    //Movimentação via teclado (wasd)
+    window.addEventListener("keydown", function(event) {
+        switch(event.key) {
+            case 'w':
+                posicaoSeta[1] += 0.1;
+                break;
+            case 's':
+                posicaoSeta[1] -= 0.1;
+                break;
+            case 'a':
+                posicaoSeta[0] -= 0.1;
+                break;
+            case 'd':
+                posicaoSeta[0] += 0.1;
+                break;
+        }
+    });
 
     render();
 }
@@ -148,14 +158,14 @@ function tri(a ,b ,c ,color){
     ];
 
     var vertexColors = [
-        [ 0.0, 0.0, 0.0, 1.0 ],  // black
-        [ 1.0, 0.0, 0.0, 1.0 ],  // red
-        [ 1.0, 1.0, 0.0, 1.0 ],  // yellow
-        [ 0.0, 1.0, 0.0, 1.0 ],  // green
-        [ 0.0, 0.0, 1.0, 1.0 ],  // blue
-        [ 1.0, 0.0, 1.0, 1.0 ],  // magenta
-        [ 0.0, 1.0, 1.0, 1.0 ],  // cyan
-        [ 1.0, 1.0, 1.0, 1.0 ]   // white
+        [ 0.27, 0.15, 0.2, 1.0 ],  
+        [ 0.57, 0.13, 0.3, 1.0 ],  
+        [ 0.89, 0.52, 0.29, 1.0 ], 
+        [ 0.91, 0.85, 0.34, 1.0 ],  
+        [ 0.89, 1.0, 0.81, 1.0 ],  
+        [ 0.89, 1.0, 1.0, 1.0 ],  
+        [ 0.75, 0.35, 0.3, 0.8 ],
+        [ 0.8, 0.8, 0.8, 1.0 ] 
     ];
 
     var indices = [ a, b, c];
@@ -167,16 +177,19 @@ function tri(a ,b ,c ,color){
     }
 }
 
-function render()
-{
-    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+function render() {
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    theta[0] += 2.0;
-    theta[1] += 2.0;
+    // Calcular as novas posições dos vértices com base na posição da seta
+    var translatedPoints = [];
+    for (var i = 0; i < points.length; i++) {
+        translatedPoints.push(vec4(points[i][0] + posicaoSeta[0], points[i][1] + posicaoSeta[1], points[i][2], points[i][3]));
+    }
 
-    gl.uniform3fv(thetaLoc, theta);
+    // Atualizar buffer
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(translatedPoints), gl.STATIC_DRAW);
 
-    gl.drawArrays( gl.TRIANGLES, 0, points.length );
+    gl.drawArrays(gl.TRIANGLES, 0, points.length);
 
-    requestAnimFrame( render );
+    setTimeout(function (){requestAnimFrame(render);}, velocidade);
 }

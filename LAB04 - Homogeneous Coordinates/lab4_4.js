@@ -5,6 +5,8 @@ var gl;
 
 var NumVertices  = 36;
 
+var escala = 0.2; //escala inicial
+
 var points = [];
 var colors = [];
 
@@ -25,7 +27,7 @@ window.onload = function init()
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
-    cria_seta();
+    cria_seta(escala);
     //colorCube();
     //colorPiramide();
 
@@ -56,49 +58,80 @@ window.onload = function init()
 
     thetaLoc = gl.getUniformLocation(program, "theta");
 
+    //event listeners for buttons
+    document.getElementById( "Dobrar" ).onclick = function () {
+        //dobrar tamanho
+        //Escala: P’’ = 2(sx1*sx2, sy1*sy2)P
+        escala *= 2.0;
+        // Limpa os pontos e cores antigos
+        points = [];
+        colors = [];
+
+        // Recalcula os pontos e cores com a nova escala
+        cria_seta(escala);
+
+        // Atualiza o buffer dos pontos
+        gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
+    };
+    document.getElementById( "Dividir" ).onclick = function () {
+        //Dividir tamanho pela metade
+        //Escala: P’’ = (1/2) (sx1*sx2, sy1*sy2)P
+        escala *= 0.5;
+        // Limpa os pontos e cores antigos
+        points = [];
+        colors = [];
+
+        // Recalcula os pontos e cores com a nova escala
+        cria_seta(escala);
+
+        // Atualiza o buffer dos pontos
+        gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
+    };
+
     render();
 }
 
-function cria_seta()
+function cria_seta(esc)
 {
-    quad( 1, 0, 3, 2 );
-    quad( 3, 0, 4, 7 );
-    quad( 6, 5, 1, 2 );
-    quad( 4, 5, 6, 7 );
-    quad( 5, 4, 0, 1 );
-    quad( 8, 9, 11,10);
+    quad( 1, 0, 3, 2 , esc);
+    quad( 3, 0, 4, 7 , esc);
+    quad( 6, 5, 1, 2 , esc);
+    quad( 4, 5, 6, 7 , esc);
+    quad( 5, 4, 0, 1 , esc);
+    quad( 8, 9, 11,10, esc);
 
-    tri(0,1,4,0)
-    tri(1,3,4,1)
-    tri(3,2,4,2)
-    tri(2,0,4,3)
+    tri(0,1,4,0, esc)
+    tri(1,3,4,1, esc)
+    tri(3,2,4,2, esc)
+    tri(2,0,4,3, esc)
 
 
 }
 
 
-function colorPiramide()
+function colorPiramide(esc)
 {
-    quad( 0, 3, 7, 4 );
-    tri(0, 1, 4, 1);
-    tri(1, 3, 4, 2);
-    tri(2, 3, 4, 3);
-    tri(2, 0, 4, 4);
+    quad( 0, 3, 7, 4 , esc);
+    tri(0, 1, 4, 1, esc);
+    tri(1, 3, 4, 2, esc);
+    tri(2, 3, 4, 3, esc);
+    tri(2, 0, 4, 4, esc);
 }
 
-function colorCube()
+function colorCube(esc)
 {
-    quad( 1, 0, 3, 2 );
-    quad( 2, 3, 7, 6 );
-    quad( 3, 0, 4, 7 );
-    quad( 6, 5, 1, 2 );
-    quad( 4, 5, 6, 7 );
-    quad( 5, 4, 0, 1 );
+    quad( 1, 0, 3, 2 , esc);
+    quad( 2, 3, 7, 6 , esc);
+    quad( 3, 0, 4, 7 , esc);
+    quad( 6, 5, 1, 2 , esc);
+    quad( 4, 5, 6, 7 , esc);
+    quad( 5, 4, 0, 1 , esc);
     
 }
 
-var escala = 0.2
-function quad(a, b, c, d)
+function quad(a, b, c, d, escala)
 {
     var vertices = [
         //paralelepipedo
@@ -138,7 +171,7 @@ function quad(a, b, c, d)
     }
 }
 
-function tri(a ,b ,c ,color){
+function tri(a ,b ,c ,color, escala){
     var vertices = [
         vec4(  0.6*escala,  0.6*escala,  0.6*escala, 1.0 ),  
         vec4(  0.6*escala, -0.6*escala,  0.6*escala, 1.0 ),
@@ -148,14 +181,14 @@ function tri(a ,b ,c ,color){
     ];
 
     var vertexColors = [
-        [ 0.0, 0.0, 0.0, 1.0 ],  // black
-        [ 1.0, 0.0, 0.0, 1.0 ],  // red
-        [ 1.0, 1.0, 0.0, 1.0 ],  // yellow
-        [ 0.0, 1.0, 0.0, 1.0 ],  // green
-        [ 0.0, 0.0, 1.0, 1.0 ],  // blue
-        [ 1.0, 0.0, 1.0, 1.0 ],  // magenta
-        [ 0.0, 1.0, 1.0, 1.0 ],  // cyan
-        [ 1.0, 1.0, 1.0, 1.0 ]   // white
+        [ 0.27, 0.15, 0.2, 1.0 ],  
+        [ 0.57, 0.13, 0.3, 1.0 ],  
+        [ 0.89, 0.52, 0.29, 1.0 ], 
+        [ 0.91, 0.85, 0.34, 1.0 ],  
+        [ 0.89, 1.0, 0.81, 1.0 ],  
+        [ 0.89, 1.0, 1.0, 1.0 ],  
+        [ 0.75, 0.35, 0.3, 0.8 ],
+        [ 0.8, 0.8, 0.8, 1.0 ] 
     ];
 
     var indices = [ a, b, c];
@@ -166,6 +199,7 @@ function tri(a ,b ,c ,color){
 
     }
 }
+
 
 function render()
 {

@@ -55,6 +55,12 @@ window.onload = function init()
     gl.enableVertexAttribArray( vPosition );
 
     thetaLoc = gl.getUniformLocation(program, "theta");
+    
+    document.getElementById("RandomRot").onclick = function() {
+        theta[0] += Math.floor(Math.random()*360);
+        theta[1] += Math.floor(Math.random()*360);
+        theta[2] += Math.floor(Math.random()*360);
+    };
 
     render();
 }
@@ -170,9 +176,6 @@ function tri(a ,b ,c ,color){
 function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    theta[0] += 2.0;
-    theta[1] += 2.0;
 
     gl.uniform3fv(thetaLoc, theta);
 

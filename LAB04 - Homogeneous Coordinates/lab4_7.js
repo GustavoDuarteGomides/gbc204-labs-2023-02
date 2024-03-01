@@ -15,8 +15,12 @@ var zAxis = 2;
 var axis = 0;
 //var theta = [ 30, 30, 30 ];
 var theta = [ 0, 0, 0 ];
+var scale = [1.0, 1.0, 1.0];
+var transform = [0.0, 0.0, 0.0];
 
 var thetaLoc;
+var scaleLoc;
+var transformLoc;
 
 window.onload = function init()
 {
@@ -55,6 +59,44 @@ window.onload = function init()
     gl.enableVertexAttribArray( vPosition );
 
     thetaLoc = gl.getUniformLocation(program, "theta");
+    scaleLoc = gl.getUniformLocation(program, "scale");
+    transformLoc = gl.getUniformLocation(program, "transform");
+
+    
+    document.getElementById("RandomRot").onclick = function() {
+        theta[0] += Math.floor(Math.random()*360);
+        theta[1] += Math.floor(Math.random()*360);
+        theta[2] += Math.floor(Math.random()*360);
+    };
+
+    document.getElementById("ScaleUp").onclick = function(){
+        scale[0] = scale[0] * 2;
+        scale[1] = scale[1] * 2;
+        scale[2] = scale[2] * 2;
+    };
+
+    document.getElementById("ScaleDown").onclick = function(){
+        scale[0] = scale[0] / 2;
+        scale[1] = scale[1] / 2;
+        scale[2] = scale[2] / 2;
+    };
+
+    window.addEventListener("keydown", function(event){
+        switch(event.key){
+            case "w":
+                transform[1] += 0.1;
+                break;
+            case "s":
+                transform[1] -= 0.1;
+                break;
+            case "a":
+                transform[0] -= 0.1;
+                break;
+            case "d":
+                transform[0] += 0.1;
+                break;
+        }
+    });
 
     render();
 }
@@ -171,10 +213,9 @@ function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    theta[0] += 2.0;
-    theta[1] += 2.0;
-
     gl.uniform3fv(thetaLoc, theta);
+    gl.uniform3fv(scaleLoc, scale);
+    gl.uniform3fv(transformLoc, transform);
 
     gl.drawArrays( gl.TRIANGLES, 0, points.length );
 
