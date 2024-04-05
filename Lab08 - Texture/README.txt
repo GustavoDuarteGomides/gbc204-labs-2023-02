@@ -12,6 +12,8 @@ textureCube4: texture map with two texture units. First applies checkerboard, se
 
 textureSquare: demo of aliasing with different texture parameters.
 
+> Esses próximos tentem entender o que aconteceu - qual o tipo de textura foi usada (na aula só vimos código de mapeamento de textura). Observe que alguns fazem operações nos pixels
+
 reflectionMap: reflection map of a colored cube onto another cube rotating inside of it
 
 reflectionMap2: reflection map of a sphere inside a cube.
@@ -26,8 +28,7 @@ bumpMap2: bump map using 256 x 256 version of the honolulu data. One rotation mo
 
 hatImage: image of the sombero function with colors assigned to the y values and the resulting image as texture mapped to a square
 
-honoluluImage: image display of height data from hawaii using a texture map with edge
-enhancement in the fragment shader
+honoluluImage: image display of height data from hawaii using a texture map with edge enhancement in the fragment shader
 
 render1: Sierpinski gasket rendered to a texture and then display on a square.
 
