@@ -1,4 +1,6 @@
-Chapter 7 Programs:
+Assim como nas outras praticas, estude e comente os seguintes códigos:
+
+- use essa ordem para estudo
 
 textureCube1: texture map of a gif image onto cube. Note some browsers such as Chrome will not allow the use of an external file as texture image. Program also displays the image on the right.
 
